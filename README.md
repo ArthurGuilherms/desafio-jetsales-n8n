@@ -1,106 +1,77 @@
-\# 🤖 Assistente Virtual Inteligente - JetFit Suplementos (Desafio JetSales)
+<h1 align="center">🤖 JetFit Suplementos - IA Sales Assistant</h1>
 
+<p align="center">
+  <i>Solução de chatbot com IA Generativa desenvolvida para o Desafio Técnico da JetSales Brasil.</i>
+</p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/n8n-FF6D5W?style=for-the-badge&logo=n8n&logoColor=white" alt="n8n" />
+  <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI" />
+  <img src="https://img.shields.io/badge/Google_Sheets-34A853?style=for-the-badge&logo=google-sheets&logoColor=white" alt="Google Sheets" />
+  <img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="WhatsApp" />
+</p>
 
-\## 📋 Sobre o Projeto
+<hr>
 
-Este repositório contém a solução desenvolvida para o desafio técnico da vaga na JetSales Brasil. Trata-se de uma aplicação de chatbot construída em \*\*n8n\*\*, integrada à plataforma de atendimento omnichannel da JetSales via Webhook e API.
+## 📋 Sobre o Projeto
 
+Este projeto consiste em um assistente virtual construído em low-code (**n8n**), integrado à plataforma omnichannel da JetSales via API e Webhooks. O bot utiliza modelos de **IA Generativa** para atuar como um consultor de vendas da "JetFit Suplementos", guiando o cliente desde a sondagem de objetivos até a simulação do checkout.
 
+🎥 **[Assista aqui ao vídeo de apresentação e demonstração do projeto](LINK_DO_SEU_VIDEO_AQUI)**
 
-O assistente atua como um consultor de vendas para a loja fictícia "JetFit Suplementos", utilizando Inteligência Artificial Generativa para oferecer um atendimento humanizado, consultivo e focado em conversão, além de gerenciar estoque em tempo real.
+## ✨ Principais Funcionalidades
 
+- **🧠 Atendimento Consultivo (LLM):** Respostas dinâmicas e humanizadas, formatadas visualmente para WhatsApp (uso de emojis e quebras de linha).
+- **🎙️ Voice-to-Text Integrado:** Suporte a mensagens de áudio. Utiliza a API Whisper (via Groq) para transcrever a voz do cliente e manter o contexto da conversa.
+- **📊 Gestão de Inventário em Tempo Real:** Consulta ao banco de dados (Google Sheets) para validar disponibilidade. Se o estoque estiver baixo, a IA injeta gatilhos mentais de escassez na resposta.
+- **🛒 Fluxo de Checkout:** O bot gera um resumo do pedido e simula a cobrança enviando a chave PIX e um QR Code dinâmico, seguido da baixa automática no estoque.
+- **👨‍💻 Handoff Inteligente:** Escalonamento automático para atendimento humano no painel JetSales caso a IA identifique intenções complexas ou caso ocorra erro no fluxo.
 
+## ⚙️ Instruções de Configuração e Execução
 
-🎥 \*\*\[Clique aqui para assistir ao vídeo de apresentação e demonstração do projeto]\*\* \*(Insira o link do seu vídeo aqui)\*
+Siga os passos abaixo para configurar e rodar o projeto em sua máquina ou servidor:
 
+### 1. Pré-requisitos
+Certifique-se de ter em mãos:
+- Instância do **n8n** (Cloud ou Self-hosted) atualizada.
+- API Key da **OpenAI** (ou Google Gemini).
+- API Key do **Groq** (para o modelo Whisper).
+- Conta no Google Cloud com a **Google Sheets API** ativada (para autenticação OAuth2).
+- URL base e Token Bearer da **JetSales API**.
 
+### 2. Importando o Fluxo
+1. Faça o download do arquivo `fluxo-jetfit.json` contido neste repositório.
+2. Na interface do n8n, acesse o menu superior direito, clique em **Import from File** e selecione o arquivo.
 
-\## 🚀 Principais Funcionalidades (Features)
+### 3. Configurando as Credenciais
+No fluxo importado, configure as credenciais nos respectivos nós:
+- **Chat Model:** Insira sua chave da API de IA.
+- **HTTP Request (Whisper):** Insira a chave do Groq no formato `Bearer Auth`.
+- **Google Sheets:** Autentique sua conta Google para permitir leitura/escrita.
+- **Nós de API JetSales:** Configure a credencial `httpBearerAuth` com o token da plataforma.
 
-\* \*\*Atendimento Humanizado e Formatado:\*\* O bot utiliza IA para responder dúvidas comuns de forma dinâmica, formatando listas de produtos com quebras de linha e emojis (📦) para excelente UX no WhatsApp.
+### 4. Configurando Destinatários (Alertas e Escalonamento)
+Para que os alertas internos funcionem corretamente na sua operação, atualize os seguintes nós com os dados da sua equipe:
+- **WhatsApp da Equipe (Handoff):** Nos nós `Escalonamento Solicitado`, `Escalonamento Solicitado por Erro` e `Informa Venda WhatsApp`, altere o parâmetro `number` para o número de WhatsApp do responsável (ex: gerente ou suporte).
+- **E-mails de Log:** Nos nós do Gmail (`Informa Venda E-mail` e `Informa Erro ao Suporte`), altere o campo `Send To` para o e-mail da sua equipe.
 
-\* \*\*🎙️ Voice-to-Text (Acessibilidade):\*\* Integração com a API Whisper (via Groq) para transcrição imediata de áudios. O cliente pode enviar mensagens de voz, e a IA processa e responde com o mesmo nível de contexto.
+### 5. Configurando o Banco de Dados (Sheets)
+Crie uma planilha no Google Sheets com as seguintes colunas:
+`Produto` | `Preço` | `Estoque` | `Descricao` | `Imagem`
 
-\* \*\*📊 Gestão Dinâmica de Estoque:\*\* Consulta em tempo real a uma planilha do Google Sheets. O sistema identifica níveis de estoque, aplica gatilhos de urgência ("Últimas unidades!") no prompt e realiza a baixa automática do inventário após o "pagamento".
+*Dica: Após criar a planilha, entre nos nós do Google Sheets dentro do fluxo e selecione o seu arquivo.*
 
-\* \*\*👨‍💻 Handoff (Escalonamento Humano):\*\* Mecanismo de roteamento inteligente. Se o cliente fizer solicitações complexas ou fora do escopo, o bot alerta a equipe internamente e transfere o atendimento via API da JetSales.
+### 6. Ativando o Webhook
+1. Dê um duplo clique no nó inicial `Webhook: Entrada WhatsApp`.
+2. Copie a URL gerada na aba **Production URL**.
+3. Acesse o painel da JetSales em `Configurações > API/Webhook` e cole a URL para habilitar o recebimento de eventos.
+4. Salve o fluxo e altere a chave principal no canto superior direito do n8n para **Active**.
 
-\* \*\*🛡️ Sistema Anti-Flood e Tratamento de Erros:\*\* Debounce configurado para evitar múltiplas execuções simultâneas e disparos automáticos de e-mail/WhatsApp para a equipe de TI caso a IA ou a API apresentem falhas.
+---
 
+## 👨‍💻 Autor
 
-
-\## 🏗️ Arquitetura e Tecnologias Utilizadas
-
-\* \*\*Orquestração:\*\* n8n (Low-code)
-
-\* \*\*IA Generativa:\*\* Gemini / OpenAI \*(Ajuste para o que você definir na versão final)\*
-
-\* \*\*Transcrição de Áudio:\*\* Whisper-large-v3
-
-\* \*\*Banco de Dados (Mock):\*\* Google Sheets API
-
-\* \*\*Integração:\*\* JetSales API (Endpoints de envio de mensagem e mídia)
-
-
-
-\## ⚙️ Como Configurar e Executar o Projeto
-
-
-
-Siga os passos abaixo para rodar este fluxo em sua própria instância do n8n:
-
-
-
-\### Pré-requisitos
-
-1\. Uma instância do \*\*n8n\*\* (Cloud ou Self-hosted) rodando.
-
-2\. Chaves de API:
-
-&#x20;  \* IA Generativa (OpenAI ou Google Gemini).
-
-&#x20;  \* Groq (para o nó de transcrição de áudio).
-
-3\. Credenciais de autenticação do Google (OAuth2) para acesso ao Google Sheets.
-
-4\. Token Bearer da \*\*JetSales\*\* para autenticação nos nós de \*HTTP Request\*.
-
-
-
-\### Passo a Passo de Instalação
-
-1\. \*\*Importar o Fluxo:\*\* \* Faça o download do arquivo `fluxo-jetfit.json` disponível neste repositório.
-
-&#x20;  \* No n8n, clique em `Import from File` (ou arraste o arquivo para a área de trabalho do n8n).
-
-2\. \*\*Configurar Credenciais:\*\* \* Abra os nós sinalizados com erro de credencial (Google Sheets, IA Model, Groq, JetSales HTTP Requests) e insira suas respectivas chaves de API.
-
-3\. \*\*Configurar o Banco de Dados (Google Sheets):\*\*
-
-&#x20;  \* Crie uma planilha no Google Sheets com as colunas: `Produto`, `Preço`, `Estoque`, `Descricao` e `Imagem`.
-
-&#x20;  \* Atualize os nós do Google Sheets no fluxo selecionando a sua planilha recém-criada.
-
-4\. \*\*Configurar o Webhook na JetSales:\*\*
-
-&#x20;  \* Dê um duplo clique no nó inicial `Webhook: Entrada WhatsApp`.
-
-&#x20;  \* Copie a \*\*Production URL\*\*.
-
-&#x20;  \* Acesse o painel da JetSales, navegue até `Configurações > API/Webhook` e cole a URL copiada para receber os eventos de novas mensagens.
-
-5\. \*\*Ativação:\*\* \* Salve o fluxo e ative a chave no canto superior direito do n8n (`Active`). 
-
-&#x20;  \* O assistente já estará pronto para receber e responder mensagens!
-
-
-
-\## 💡 Autor
-
-\*\*Arthur Guilherme Guimarães Silva\*\*
-
-\* \[LinkedIn](https://www.linkedin.com/in/arthur-guilherms) \*(Coloque o link correto do seu perfil)\*
-
-\* E-mail: arthurguilhermss@gmail.com
-
+**Arthur Guilherme Guimarães Silva**
+- [LinkedIn](https://www.linkedin.com/in/arthur-guilherms)
+- [GitHub](https://github.com/arthur-guilherms)
+- Contato: arthurguilhermss@gmail.com
