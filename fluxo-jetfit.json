@@ -1,5 +1,5 @@
 {
-  "name": "Desafio Jet Sales",
+  "name": "Desafio JetSales - Bot + IA",
   "nodes": [
     {
       "parameters": {
@@ -10,10 +10,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        1904,
-        1568
+        -1328,
+        880
       ],
-      "id": "b3a1f7ae-7368-43fd-a5b2-7ee522c625dd",
+      "id": "6c39ba81-7e29-4c20-8697-4540f40ce2d1",
       "name": "Simple Memory"
     },
     {
@@ -24,10 +24,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        2032,
-        1568
+        -1200,
+        880
       ],
-      "id": "e0c62345-8e2a-4921-a8c0-b38e7b1aa7fb",
+      "id": "2d9f8249-b22e-43c2-8385-e00f4a6bc77f",
       "name": "Structured Output Parser"
     },
     {
@@ -39,10 +39,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -912,
-        1344
+        -4144,
+        656
       ],
-      "id": "8f49823d-067d-4e59-89f4-c600a9b60a8b",
+      "id": "4343d4aa-cace-4ff9-aab0-72b2a683639a",
       "name": "Webhook: Entrada WhatsApp",
       "webhookId": "8e021f49-db2e-4c16-80b8-7a227870f776"
     },
@@ -122,10 +122,10 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        -464,
-        1344
+        -3696,
+        656
       ],
-      "id": "c363eacb-fb0f-48a4-a977-cd65b378bec4",
+      "id": "8abea96e-abbb-49d5-bceb-6b325c91351c",
       "name": "Atualiza Mensagem na Table"
     },
     {
@@ -151,10 +151,10 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        -16,
-        1344
+        -3248,
+        656
       ],
-      "id": "b0fff5ae-c7e9-4c4f-95aa-75c26bf1c991",
+      "id": "b54c5c15-b83a-424c-84a8-0ef5f8261931",
       "name": "Verifica Ultima Mensagem"
     },
     {
@@ -178,10 +178,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        432,
-        1344
+        -2800,
+        656
       ],
-      "id": "444e7743-8b37-4f23-bfb9-ac44aa064578",
+      "id": "3b0f726f-e72f-4349-a06a-4acd6c9e61fe",
       "name": "Verifica Planilha Controle Produtos",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -197,10 +197,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        656,
-        1344
+        -2576,
+        656
       ],
-      "id": "344f6dc1-e2b7-42e0-b79b-fda845db5ac1",
+      "id": "26a09d84-eed9-4061-ae66-618a5f327dc3",
       "name": "Cria Catálogo de Produtos Disponíveis"
     },
     {
@@ -231,10 +231,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        880,
-        1344
+        -2352,
+        656
       ],
-      "id": "0a558e37-7243-4104-aa04-c84c46ec7f9a",
+      "id": "5b1c8f54-5f58-49cb-8023-719a069b04d3",
       "name": "Verifica Tipo de Mensagem"
     },
     {
@@ -260,10 +260,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1552,
-        1344
+        -1680,
+        656
       ],
-      "id": "01802f69-dd92-44f8-ad79-f65af2a4b5cc",
+      "id": "71e01e36-b378-4a65-a1b9-44b79914d448",
       "name": "Organiza Informações Necessárias"
     },
     {
@@ -272,19 +272,19 @@
         "text": "={{ $json.userMessage }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "==PERSONA: Você é o Consultor Especialista da \"JetFit Suplementos\". Foque em resultados técnicos e vendas consultivas.\n\nDADOS DO CLIENTE:\nNome do cliente: {{ $('Webhook: Entrada WhatsApp').first().json.body.message.raw.pushName }}\n\nREGRA DE SAUDAÇÃO (APENAS INÍCIO DA CONVERSA):\nSe o cliente apenas disser \"oi\", \"olá\" ou similar, inicie com muito entusiasmo: \"Olá, [Nome do Cliente]! Somos da JetFit Suplementos. Me informe o que deseja comprar ou qual seu objetivo fitness (massa ou peso) para que possamos lhe ajudar na melhor escolha!\". Se ele já fizer uma pergunta direta, vá direto ao ponto e não repita a saudação gigante.\n\n{{ $('Cria Catálogo de Produtos Disponíveis').first().json.catalogoFormatado }}\n\nESTRATÉGIA DE ATENDIMENTO E VENDAS:\n1. SONDAGEM: Se o cliente não souber o que quer, pergunte o objetivo dele ANTES de oferecer produtos.\n2. OFERTA CONSULTIVA: Recomende no máximo 2 ou 3 produtos que façam sentido.\n3. ESCASSEZ ESTRITA (OBRIGATÓRIO): Verifique o catálogo injetado acima. Se o produto escolhido possuir a tag [Alerta Interno], você TEM O DEVER ABSOLUTO de incluir um aviso de urgência logo abaixo do nome do produto (Ex: \"⚠️ Atenção: restam poucas unidades!\").\n4. MEMÓRIA: Evite repetir a URL da imagem de um produto que já foi enviado.\n\nREGRAS DE FORMATAÇÃO VISUAL E MENSAGENS (MUITO IMPORTANTE):\n1. AGRUPAMENTO: Agrupe todos os produtos oferecidos em UMA ÚNICA string dentro do array de 'mensagens', separados por quebra de linha (\\n). NUNCA divida os produtos em várias mensagens separadas.\n2. FORMATO DE APRESENTAÇÃO: Quando listar produtos, use EXATAMENTE este formato para a mensagem (incluindo a pergunta final):\n📦 Nome do Produto - R$ XX,XX\n⚠️ (Insira o alerta de escassez aqui APENAS se o produto tiver a tag no catálogo)\n📦 Outro Produto - R$ XX,XX\n\n💰 *Total estimado:* R$ XX,XX\n\n❓ Deseja continuar com a compra para separarmos o seu pedido?\n\nINSTRUÇÕES OBRIGATÓRIAS PARA O JSON:\n- 'mensagens': Fatie sua resposta em um array de 2 a 3 frases curtas. Lembre-se: a lista com as opções de produtos e a pergunta final devem ocupar apenas UMA única posição desse array.\n- 'imagem': COPIE EXATAMENTE a \"URL da Imagem\" da planilha. Se não for enviar produto, envie \"\".\n- 'escalar': Responda com false. Use true APENAS se o cliente pedir um humano.\n- 'objetivo': \"Massa\", \"Peso\" ou \"Indefinido\".\n- 'status_venda': \"Nenhum\" (conversa normal), \"Aguardando\" (gerou o PIX) ou \"Pago\" (cliente confirmou o pagamento).\n- 'carrinho': Se o status for \"Pago\", liste os produtos comprados obrigatoriamente usando o NOME EXATO do catálogo e a \"quantidade\" (número). Se não for venda concluída, retorne um array vazio [].\n\nMECÂNICA DE COMPRA (SIMULAÇÃO E FECHAMENTO):\n1. O GATILHO: Assim que o cliente disser \"quero comprar\", \"vou levar\", \"passa o pix\", ou confirmar a escolha do produto, INICIE O CHECKOUT IMEDIATAMENTE.\n2. O CHECKOUT: Mude o 'status_venda' para \"Aguardando\". Envie a chave PIX (00020126580014br.gov.bcb.pix0136suporte@jetfit.com.br).\n3. O RECIBO: Formate UMA das suas 'mensagens' do array exatamente como um cupom fiscal vertical:\n📦 *Resumo do Pedido:*\n• 1x Nome do Produto 1 (R$ XX,XX)\n💰 *Total a pagar:* R$ XX,XX\n4. A IMAGEM DO CHECKOUT: No campo 'imagem' do JSON, envie SEMPRE este QR Code na hora de cobrar: https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg\n5. A CONFIRMAÇÃO: Quando ele disser \"pagou\", \"transferi\" ou similar, mude o status para \"Pago\", preencha o array 'carrinho', agradeça e diga que vai para expedição. NUNCA repita o resumo do pedido depois de pago."
+          "systemMessage": "=PERSONA: Você é o Consultor Especialista da \"JetFit Suplementos\". Foque em resultados técnicos e vendas consultivas.\n\nDADOS DO CLIENTE:\nNome do cliente: {{ $('Webhook: Entrada WhatsApp').first().json.body.message.raw.pushName }}\n\nREGRA DE SAUDAÇÃO (APENAS INÍCIO DA CONVERSA):\nSe o cliente apenas disser \"oi\", \"olá\" ou similar, inicie com muito entusiasmo: \"Olá, [Nome do Cliente]! Somos da JetFit Suplementos. Me informe o que deseja comprar ou qual seu objetivo fitness (massa ou peso) para que possamos lhe ajudar na melhor escolha!\". Se ele já fizer uma pergunta direta, vá direto ao ponto e não repita a saudação gigante.\n\n{{ $('Cria Catálogo de Produtos Disponíveis').first().json.catalogoFormatado }}\n\nESTRATÉGIA DE ATENDIMENTO E VENDAS:\n1. SONDAGEM: Se o cliente não souber o que quer, pergunte o objetivo dele ANTES de oferecer produtos.\n2. OFERTA CONSULTIVA: Recomende no máximo 2 ou 3 produtos que façam sentido.\n3. ESCASSEZ ESTRITA (OBRIGATÓRIO): Verifique o catálogo injetado acima. Se o produto escolhido possuir a tag [Alerta Interno], você TEM O DEVER ABSOLUTO de incluir um aviso de urgência logo abaixo do nome do produto (Ex: \"⚠️ Atenção: restam poucas unidades!\").\n4. MEMÓRIA: Evite repetir a URL da imagem de um produto que já foi enviado.\n\nREGRAS DE FORMATAÇÃO VISUAL E MENSAGENS (MUITO IMPORTANTE):\n1. AGRUPAMENTO: Agrupe todos os produtos oferecidos em UMA ÚNICA string dentro do array de 'mensagens', separados por quebra de linha (\\n). NUNCA divida os produtos em várias mensagens separadas.\n2. FORMATO DE APRESENTAÇÃO: Quando listar produtos, use EXATAMENTE este formato para a mensagem (incluindo a pergunta final):\n📦 Nome do Produto - R$ XX,XX\n⚠️ (Insira o alerta de escassez aqui APENAS se o produto tiver a tag no catálogo)\n📦 Outro Produto - R$ XX,XX\n\n💰 *Total estimado:* R$ XX,XX\n\n❓ Deseja continuar com a compra para separarmos o seu pedido?\n\nINSTRUÇÕES OBRIGATÓRIAS PARA O JSON:\n- 'mensagens': Fatie sua resposta em um array de 2 a 3 frases curtas. Lembre-se: a lista com as opções de produtos e a pergunta final devem ocupar apenas UMA única posição desse array.\n- 'imagem': COPIE EXATAMENTE a \"URL da Imagem\" da planilha quando for recomendar um produto. Se não for enviar produto ou se for a hora do checkout, envie \"\". NUNCA crie links de QR Code.\n- 'escalar': Responda com false. Use true APENAS se o cliente pedir um humano.\n- 'objetivo': \"Massa\", \"Peso\" ou \"Indefinido\".\n- 'status_venda': \"Nenhum\" (conversa normal), \"Aguardando\" (gerou o PIX) ou \"Pago\" (cliente confirmou o pagamento).\n- 'carrinho': Se o status for \"Pago\", liste os produtos comprados obrigatoriamente usando o NOME EXATO do catálogo e a \"quantidade\". \n\n🚨 REGRA DE RESET PÓS-VENDA (MÁXIMA PRIORIDADE): \nSe a venda já foi concluída no passado e o cliente continuar conversando (ex: dúvida, reclamação ou pedir para falar com humano / escalar=true), você DEVE OBRIGATORIAMENTE retornar o 'status_venda' para \"Nenhum\" e esvaziar o 'carrinho' para []. NUNCA repita a tag \"Pago\" ou os itens do carrinho em mensagens seguintes, senão o sistema cobrará o cliente duas vezes!\n\nMECÂNICA DE COMPRA (SIMULAÇÃO E FECHAMENTO):\n1. O GATILHO: Assim que o cliente disser \"quero comprar\", \"vou levar\", \"passa o pix\", ou confirmar a escolha do produto, INICIE O CHECKOUT IMEDIATAMENTE.\n2. O CHECKOUT: Mude o 'status_venda' para \"Aguardando\" e deixe o campo 'imagem' vazio (\"\").\n3. O RECIBO: Formate UMA das suas 'mensagens' do array exatamente como um cupom fiscal vertical:\n📦 *Resumo do Pedido:*\n• 1x Nome do Produto 1 (R$ XX,XX)\n💰 *Total a pagar:* R$ XX,XX\n\nPara concluir sua compra, copie e cole a nossa Chave PIX abaixo:\n00020126580014br.gov.bcb.pix0136suporte@jetfit.com.br\n4. A CONFIRMAÇÃO: Quando ele disser \"pagou\", \"transferi\" ou similar, mude o status para \"Pago\", preencha o array 'carrinho', agradeça e diga que vai para expedição. NUNCA repita o resumo do pedido depois de pago."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        1840,
-        1344
+        -1392,
+        656
       ],
-      "id": "d0c6b4b1-cfe4-4236-941b-694044b460b6",
+      "id": "d55446c3-e679-407e-a22e-a606761c352d",
       "name": "AI Agent de Respostas",
-      "retryOnFail": false,
-      "maxTries": 2,
+      "retryOnFail": true,
+      "maxTries": 3,
       "waitBetweenTries": 5000,
       "onError": "continueErrorOutput"
     },
@@ -316,10 +316,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2240,
-        1344
+        -992,
+        656
       ],
-      "id": "09e6e30a-a58c-43b6-809b-02df97ebaa32",
+      "id": "ee01f869-72ff-4e6a-88d0-6312d6b83564",
       "name": "Verifica Pagamento"
     },
     {
@@ -329,10 +329,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2464,
-        1216
+        -768,
+        528
       ],
-      "id": "b17d237b-9b45-4519-98f5-f9e07701ec92",
+      "id": "570d7e9a-a307-40ea-b59b-2d7a7bcbcd78",
       "name": "Monta Carrinho Pagamento"
     },
     {
@@ -428,10 +428,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2688,
-        1216
+        -544,
+        528
       ],
-      "id": "d952fa05-0dda-46cb-8ba9-56aec0e4a670",
+      "id": "873853ff-550b-40f1-897f-21e1759b5307",
       "name": "Atualiza Planilha Controle Produto",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -443,7 +443,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/7ed1b984-b133-47fb-8c1e-fd9a9b3ea9d0/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
+        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/SEU_ID_AQUI/?token=SEU_TOKEN_AQUI",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "sendBody": true,
@@ -452,7 +452,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "=557998647649"
+              "value": "=5511999999999"
             },
             {
               "name": "body",
@@ -469,10 +469,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2912,
-        1216
+        -320,
+        528
       ],
-      "id": "dbefc42a-7587-42e1-bdce-3944e61a7bac",
+      "id": "ac17a781-3489-4ebb-9560-88401c044c2b",
       "name": "Informa Venda WhatsApp",
       "executeOnce": true,
       "credentials": {
@@ -484,7 +484,7 @@
     },
     {
       "parameters": {
-        "sendTo": "arthurguilhermss@gmail.com",
+        "sendTo": "equipe@jetsales.com.br",
         "subject": "=✅ Venda Confirmada: {{ $('Webhook: Entrada WhatsApp').item.json.body.message.raw.pushName }} - JetFit",
         "message": "=<h2>Nova Venda Registrada - JetFit Suplementos</h2> <p>O cliente <strong>{{ $('Webhook: Entrada WhatsApp').item.json.body.message.raw.pushName }}</strong> acaba de realizar um pagamento via bot.</p> <hr> <h3>Itens do Pedido:</h3> <ul>   {{ $('AI Agent de Respostas').item.json.output.carrinho.map(item => `<li>${item.quantidade}x ${item.produto}</li>`).join('') }} </ul> <p>O estoque no Google Sheets foi atualizado automaticamente.</p>",
         "options": {}
@@ -492,10 +492,10 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        3136,
-        1216
+        -96,
+        528
       ],
-      "id": "55c4a459-5b88-4fda-908b-4ee44bb45c8f",
+      "id": "e5a6974c-9297-4703-864d-aeb8f3b3f5cf",
       "name": "Informa Venda E-mail",
       "webhookId": "a9ee50c1-bbc7-4ec4-890f-3c1d3bbfbcae",
       "credentials": {
@@ -507,15 +507,15 @@
     },
     {
       "parameters": {
-        "jsCode": "// Pegamos a saída da IA\nconst output = $('AI Agent de Respostas').item.json.output;\n\n// Extraímos as variáveis\nconst mensagens = output.mensagens || [];\nconst imagem = output.imagem || \"\";\nconst escalar = output.escalar || false;\nconst objetivo = output.objetivo || \"Indefinido\";\n\nlet returnItems = [];\n\n// Transforma cada frase do Array em um item separado no n8n\nmensagens.forEach((msg, index) => {\n    returnItems.push({\n        json: {\n            texto: msg,\n            // Envia a imagem apenas na PRIMEIRA iteração (index 0)\n            imagem_atual: index === 0 ? imagem : \"\",\n            escalar_atual: escalar,\n            objetivo_atual: objetivo\n        }\n    });\n});\n\n// Se a IA por acaso não gerar mensagens (falha), enviamos um fallback\nif (returnItems.length === 0) {\n    returnItems.push({\n        json: {\n            texto: \"Entendido!\",\n            imagem_atual: imagem,\n            escalar_atual: escalar,\n            objetivo_atual: objetivo\n        }\n    });\n}\n\nreturn returnItems;"
+        "jsCode": "const output = $('AI Agent de Respostas').first().json.output;\nconst session = $('Organiza Informações Necessárias').first().json.sessionId;\nconst msgId = $('Webhook: Entrada WhatsApp').first().json.body.message.id;\n\nconst mensagens = output.mensagens || [];\nconst imagem = output.imagem || \"\"; // Puxa a imagem do JSON da IA\nconst escalar = output.escalar || false;\nconst objetivo = output.objetivo || \"Indefinido\";\n\nlet returnItems = [];\n\nmensagens.forEach((msg, index) => {\n    returnItems.push({\n        json: {\n            texto: msg,\n            // A MÁGICA RESTAURADA: Coloca a foto só na 1ª mensagem. Se for o PIX, a IA já mandou \"\", então vai vazio.\n            imagem_atual: index === 0 ? imagem : \"\", \n            escalar_atual: escalar,\n            objetivo_atual: objetivo,\n            sessionId: session,\n            // A TRAVA DE SEGURANÇA: Chave única pra não ser bloqueado pela JetSales\n            externalKey: `${msgId}-${index}` \n        }\n    });\n});\n\nif (returnItems.length === 0) {\n    returnItems.push({\n        json: {\n            texto: \"Entendido!\",\n            imagem_atual: imagem,\n            escalar_atual: escalar,\n            objetivo_atual: objetivo,\n            sessionId: session,\n            externalKey: `${msgId}-fallback`\n        }\n    });\n}\n\nreturn returnItems;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3360,
-        1344
+        128,
+        656
       ],
-      "id": "9274ae93-110a-44f5-8f84-6c0074eeacf4",
+      "id": "618d7747-4840-47b3-913e-0cd64bfc08f7",
       "name": "Separa Frases Bot"
     },
     {
@@ -525,10 +525,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        3584,
-        1344
+        352,
+        656
       ],
-      "id": "b4ca02e5-c882-4381-b27a-add649120eab",
+      "id": "e9d4453a-9f41-4a0a-81cc-46a158cf4aec",
       "name": "Envia Mensagens Separadas"
     },
     {
@@ -538,10 +538,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        3808,
-        1024
+        576,
+        336
       ],
-      "id": "bf8b381c-09a3-45d8-af59-5ed9cafde8da",
+      "id": "2c49a48a-816d-48bc-a8b8-ef8bc95840e4",
       "name": "Tempo Entre Mensagens",
       "webhookId": "60bebb04-abe8-4169-8922-e1746f2acd02"
     },
@@ -573,10 +573,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4032,
-        1024
+        800,
+        336
       ],
-      "id": "a6740fdf-195a-4d46-acf6-9eb18ff12149",
+      "id": "1026455d-2b0c-4c99-8b17-a4e0788718f8",
       "name": "Verifica Escalamento"
     },
     {
@@ -606,16 +606,16 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4256,
-        1120
+        1024,
+        432
       ],
-      "id": "9c344535-6cdb-45f0-b84d-c803eb095a23",
+      "id": "810f231c-6e71-46a7-a0eb-42894ada2915",
       "name": "Verifica Imagem"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/7ed1b984-b133-47fb-8c1e-fd9a9b3ea9d0/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
+        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/SEU_ID_AQUI/?token=SEU_TOKEN_AQUI",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "sendBody": true,
@@ -624,7 +624,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "={{ $('Organiza Informações Necessárias').item.json.sessionId }}"
+              "value": "={{ $json.sessionId }}"
             },
             {
               "name": "body",
@@ -632,7 +632,7 @@
             },
             {
               "name": "externalKey",
-              "value": "={{ $node[\"Webhook: Entrada WhatsApp\"].json.body.message.id }}"
+              "value": "={{ $json.externalKey }}"
             },
             {
               "name": "mediaUrl",
@@ -645,10 +645,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        4480,
-        1200
+        1232,
+        544
       ],
-      "id": "fe7cc4a2-8ea4-4282-8ccb-417ff7c75cef",
+      "id": "48503a06-d1cd-472b-ac9f-565024d65edf",
       "name": "Envia Mensagem com Foto",
       "credentials": {
         "httpBearerAuth": {
@@ -660,7 +660,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/7ed1b984-b133-47fb-8c1e-fd9a9b3ea9d0/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
+        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/SEU_ID_AQUI/?token=SEU_TOKEN_AQUI",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "sendBody": true,
@@ -669,7 +669,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "={{ $('Organiza Informações Necessárias').item.json.sessionId }}"
+              "value": "={{ $('Organiza Informações Necessárias').first().json.sessionId }}"
             },
             {
               "name": "body",
@@ -677,7 +677,7 @@
             },
             {
               "name": "externalKey",
-              "value": "={{ $node[\"Webhook: Entrada WhatsApp\"].json.body.message.id }}"
+              "value": "={{ $('Webhook: Entrada WhatsApp').first().json.body.message.id }}"
             }
           ]
         },
@@ -686,10 +686,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        4480,
-        1392
+        1248,
+        704
       ],
-      "id": "8b3ffc2a-30f9-42b3-a0e7-dcc21c3a0d89",
+      "id": "6b0183a0-c65e-4f73-9ed4-d4dceb5a8a31",
       "name": "Envia Mensagem Sem Foto",
       "credentials": {
         "httpBearerAuth": {
@@ -701,7 +701,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/7ed1b984-b133-47fb-8c1e-fd9a9b3ea9d0/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
+        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/SEU_ID_AQUI/?token=SEU_TOKEN_AQUI",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "sendBody": true,
@@ -710,7 +710,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "=557998647649"
+              "value": "=5511999999999"
             },
             {
               "name": "body",
@@ -727,10 +727,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        4256,
-        928
+        1024,
+        240
       ],
-      "id": "22c5395b-abc1-463e-a3c9-8e3c8ca996f7",
+      "id": "fa71deab-b5b0-4464-a668-0edca0e89c4e",
       "name": "Escalonamento Solicitado",
       "credentials": {
         "httpBearerAuth": {
@@ -742,7 +742,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/7ed1b984-b133-47fb-8c1e-fd9a9b3ea9d0/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
+        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/SEU_ID_AQUI/?token=SEU_TOKEN_AQUI",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "sendBody": true,
@@ -751,7 +751,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "={{ $('Webhook: Entrada WhatsApp').item.json.body.message.ticket.contact.number }}"
+              "value": "={{ $('Organiza Informações Necessárias').first().json.sessionId }}"
             },
             {
               "name": "body",
@@ -759,7 +759,7 @@
             },
             {
               "name": "externalKey",
-              "value": "={{ $node[\"Webhook: Entrada WhatsApp\"].json.body.message.id }}"
+              "value": "={{ $('Webhook: Entrada WhatsApp').first().json.body.message.id }}"
             }
           ]
         },
@@ -768,10 +768,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        4480,
-        928
+        1248,
+        240
       ],
-      "id": "7deb39bf-600a-416a-a2ca-e8ca2e91b7d4",
+      "id": "85f6768b-f93a-41b9-8b71-fa734d6de0a4",
       "name": "Informa Escalonamento ao Cliente",
       "credentials": {
         "httpBearerAuth": {
@@ -808,10 +808,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -688,
-        1344
+        -3920,
+        656
       ],
-      "id": "b2f56460-a8d0-4b5f-a783-edd491b7eb23",
+      "id": "3d74615e-21c0-4b64-bd8d-326533348e62",
       "name": "Evita Loop"
     },
     {
@@ -821,10 +821,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -240,
-        1344
+        -3472,
+        656
       ],
-      "id": "abf52774-2f64-4d96-9e3b-eeeca011b59f",
+      "id": "643f04b0-b402-446e-a1bd-690c4c1d990b",
       "name": "Aguarda Nova Mensagem",
       "webhookId": "571a6e86-0fda-4e83-8684-8f7d341b51e7"
     },
@@ -856,10 +856,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        208,
-        1344
+        -3024,
+        656
       ],
-      "id": "5775bd76-39e4-4c41-b76d-0ecac64b7e0c",
+      "id": "1d056096-617d-411a-9393-bf184d9208e4",
       "name": "Analisa Ultimas Mensagens"
     },
     {
@@ -871,11 +871,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -960,
-        1168
+        -4192,
+        480
       ],
       "typeVersion": 1,
-      "id": "a2b0c196-a4a7-47ee-bf6c-53479aed7c84",
+      "id": "97a73fe0-1099-4875-a62b-b3f68b34ccca",
       "name": "Sticky Note"
     },
     {
@@ -887,11 +887,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        400,
-        1072
+        -2832,
+        384
       ],
       "typeVersion": 1,
-      "id": "b4fb1ff9-ab71-4e78-999a-4ad995c64ad0",
+      "id": "9532b96b-0ded-432b-bb41-468827528096",
       "name": "Sticky Note1"
     },
     {
@@ -903,43 +903,43 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1728,
-        1104
+        -1504,
+        416
       ],
       "typeVersion": 1,
-      "id": "22f77534-1677-4094-90fd-7f5798106f6e",
+      "id": "c3f95bc6-faed-4f17-a391-3af1dcdd0b33",
       "name": "Sticky Note2"
     },
     {
       "parameters": {
         "content": "# 5. Transação & Baixa de Estoque\nCaminho crítico se `status_venda == Pago`.\nUtiliza busca flexível (Fuzzy Match) cruzando o array do carrinho com o banco de dados. \nCalcula o saldo, dá baixa automática no Google Sheets e dispara alertas assíncronos (Omnichannel) para o gerente da loja iniciar a separação.",
-        "height": 592,
-        "width": 1040,
+        "height": 464,
+        "width": 1024,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2224,
-        912
+        -1008,
+        352
       ],
       "typeVersion": 1,
-      "id": "0a84d72e-1f5b-47f0-ae3c-35621b68a46d",
+      "id": "80e6d855-5438-425d-879c-bea70ccd8c08",
       "name": "Sticky Note3"
     },
     {
       "parameters": {
         "content": "# 6. UX Delivery & Handoff Humano\nResponsável pela naturalidade do robô na tela do cliente.\n- Desempacota as mensagens da IA e usa um Loop com Wait (2s) para simular digitação humana.\n- Roteia imagens apenas na primeira iteração.\n- Se `escalar == true`, trava o loop, avisa a equipe de suporte via WhatsApp e avisa o cliente sobre a transferência.",
-        "height": 928,
+        "height": 736,
         "width": 1408,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        3264,
-        624
+        32,
+        160
       ],
       "typeVersion": 1,
-      "id": "66f7e122-d3d5-4f87-a6ba-5c8b2929a0a1",
+      "id": "773eee3e-6afc-429d-ac2e-d63b4cbabbff",
       "name": "Sticky Note4"
     },
     {
@@ -953,13 +953,13 @@
           }
         }
       },
-      "id": "2bb13873-2062-4fd5-9544-e85640944fb0",
+      "id": "93fe5534-e0ff-4533-af28-e52e3f09a595",
       "name": "Download Áudio WhatsApp",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1104,
-        1216
+        -2128,
+        528
       ]
     },
     {
@@ -988,10 +988,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1328,
-        1216
+        -1904,
+        528
       ],
-      "id": "567acd80-880d-4752-8878-4701fbccd0e2",
+      "id": "a0b4b211-1047-471b-97ba-78c5bb93fc57",
       "name": "HTTP Request",
       "credentials": {
         "httpBearerAuth": {
@@ -1009,17 +1009,17 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        864,
-        912
+        -2368,
+        224
       ],
       "typeVersion": 1,
-      "id": "26a9ccf7-458a-4ae2-babf-fe290325f38a",
+      "id": "3b36cdb1-4ae5-4b0b-bdfe-3b8231b91384",
       "name": "Sticky Note5"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/7ed1b984-b133-47fb-8c1e-fd9a9b3ea9d0/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
+        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/SEU_ID_AQUI/?token=SEU_TOKEN_AQUI",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "sendBody": true,
@@ -1028,7 +1028,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "=557998647649"
+              "value": "=5511999999999"
             },
             {
               "name": "body",
@@ -1045,10 +1045,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2272,
-        1632
+        -960,
+        944
       ],
-      "id": "7b01aac6-965e-42a2-8748-8c6fdba7f764",
+      "id": "cccd0738-f6dc-4eb2-8825-9c1125d7e8a4",
       "name": "Escalonamento Solicitado por Erro",
       "credentials": {
         "httpBearerAuth": {
@@ -1060,7 +1060,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/7ed1b984-b133-47fb-8c1e-fd9a9b3ea9d0/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
+        "url": "https://chatapi.jetsalesbrasil.com/v1/api/external/SEU_ID_AQUI/?token=SEU_TOKEN_AQUI",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "sendBody": true,
@@ -1086,10 +1086,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2480,
-        1632
+        -752,
+        944
       ],
-      "id": "f82e1101-ee40-44ad-9e0f-4373781bee73",
+      "id": "27fb1abe-a898-4bb0-bdfd-5b2359d5a384",
       "name": "Informa Erro e Escalonamento ao Cliente",
       "credentials": {
         "httpBearerAuth": {
@@ -1107,16 +1107,16 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2224,
-        1520
+        -1008,
+        832
       ],
       "typeVersion": 1,
-      "id": "43f79834-7735-4743-bff6-51f179815315",
+      "id": "fa34e7a4-3034-4f84-9509-0015d7c0f51a",
       "name": "Sticky Note6"
     },
     {
       "parameters": {
-        "sendTo": "arthurguilhermss@gmail.com",
+        "sendTo": "equipe@jetsales.com.br",
         "subject": "=⚠️ ALERTA: Erro Crítico no Fluxo JetFit ({{ $now.format('HH:mm:ss') }})",
         "message": "==<h2>🚨 Falha Detectada no Chatbot JetFit</h2>\n<p>Ocorreu um erro inesperado que interrompeu a execução do fluxo.</p>\n<hr>\n<p><strong>Detalhes do Incidente:</strong></p>\n<ul>\n  <li><strong>Horário:</strong> {{ $now.format('DD/MM/YYYY - HH:mm:ss') }}</li>\n  <li><strong>ID da Execução:</strong> {{ $executionId }}</li>\n</ul>\n<p><strong>Ação Recomendada:</strong> Verifique os logs do n8n imediatamente para identificar se houve falha de API ou timeout.</p>",
         "options": {}
@@ -1124,10 +1124,10 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        2672,
-        1632
+        -560,
+        944
       ],
-      "id": "0a694336-9189-4685-afd0-805cf53d04f2",
+      "id": "01705947-b342-4183-af30-6ad4cf724408",
       "name": "Informa Erro ao Suporte",
       "webhookId": "a9ee50c1-bbc7-4ec4-890f-3c1d3bbfbcae",
       "credentials": {
@@ -1139,313 +1139,28 @@
     },
     {
       "parameters": {
+        "model": "llama-3.3-70b-versatile",
         "options": {
           "temperature": 0
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        1776,
-        1552
+        -1456,
+        880
       ],
-      "id": "f6140dd5-7678-4f67-aede-49d7383572bf",
-      "name": "Google Gemini Chat Model",
+      "id": "4dafbf38-668d-40bc-b780-a009120c1826",
+      "name": "Groq Chat Model",
       "credentials": {
-        "googlePalmApi": {
-          "id": "7cGmZDzZdAq0t9h8",
-          "name": "Google Gemini(PaLM) Api account"
+        "groqApi": {
+          "id": "J4lLlqAiXUlturMU",
+          "name": "Groq account Apresentacao"
         }
       }
     }
   ],
-  "pinData": {
-    "Webhook: Entrada WhatsApp": [
-      {
-        "json": {
-          "headers": {
-            "host": "arthurguilherme.app.n8n.cloud",
-            "user-agent": "Go-http-client/2.0",
-            "content-length": "6121",
-            "accept-encoding": "gzip, br",
-            "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
-            "cdn-loop": "cloudflare; loops=1; subreqs=1",
-            "cf-connecting-ip": "64.181.167.176",
-            "cf-ew-via": "15",
-            "cf-ipcountry": "BR",
-            "cf-ray": "9dcd8202b9301c9c-GRU",
-            "cf-visitor": "{\"scheme\":\"https\"}",
-            "cf-worker": "n8n.cloud",
-            "content-type": "application/json",
-            "x-forwarded-for": "64.181.167.176, 172.71.235.50",
-            "x-forwarded-host": "arthurguilherme.app.n8n.cloud",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "traefik-prod-users-gwc-7-77fc66445c-6r6gv",
-            "x-is-trusted": "yes",
-            "x-jetgo-webhook-version": "1.0.0",
-            "x-real-ip": "64.181.167.176"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "config": {
-              "name": "Desafio Chatbot N8N",
-              "webhook_url": "https://arthurguilherme.app.n8n.cloud/webhook/8e021f49-db2e-4c16-80b8-7a227870f776",
-              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
-              "session_id": "240",
-              "requestLogId": 6367324,
-              "id": "7ed1b984-b133-47fb-8c1e-fd9a9b3ea9d0",
-              "ticket_action": "OT",
-              "user_id": 712,
-              "tenant_id": 105,
-              "is_active": true,
-              "is_new_message": true
-            },
-            "event": "NewMessage",
-            "message": {
-              "ack": 0,
-              "body": "Por favor",
-              "caption": null,
-              "code": null,
-              "contactId": 1796395,
-              "createdAt": "2026-03-15T18:16:11.899Z",
-              "externalKey": null,
-              "fromMe": false,
-              "id": "f7589552-e075-4136-91a4-8208cf346819",
-              "idFront": null,
-              "importStatus": null,
-              "isDeleted": false,
-              "isObjectStorage": true,
-              "isTransfer": false,
-              "mediaName": null,
-              "mediaType": "text",
-              "mediaUrl": "",
-              "messageId": "3AFBB7C2FE0C397FB9C2",
-              "msgCreatedAt": null,
-              "note": false,
-              "originalName": null,
-              "params": null,
-              "previousBody": null,
-              "quotedMsgId": null,
-              "raw": {
-                "contentType": "text",
-                "key": {
-                  "addressingMode": "pn",
-                  "fromMe": false,
-                  "id": "3AFBB7C2FE0C397FB9C2",
-                  "remoteJid": "557998647649@s.whatsapp.net",
-                  "remoteJidAlt": "85426949886083@lid"
-                },
-                "message": {
-                  "conversation": "Por favor",
-                  "messageContextInfo": {
-                    "deviceListMetadata": {
-                      "recipientKeyHash": "nHXR8p9+pC87ng==",
-                      "recipientTimestamp": 1772945850,
-                      "senderKeyHash": "1C3Np/3hrfuxnQ==",
-                      "senderTimestamp": 1773327069
-                    },
-                    "deviceListMetadataVersion": 2,
-                    "messageSecret": "xaxzTq2d1Vc1HY/7J2uancdZ+GoBHRrxRShnrc8wJIs="
-                  }
-                },
-                "messageTimestamp": 1773598571000,
-                "pushName": "Arthur Guilherme"
-              },
-              "read": false,
-              "scheduleDate": null,
-              "sendType": null,
-              "size": 0,
-              "status": "received",
-              "templateId": null,
-              "templateMediaId": null,
-              "tenantId": 105,
-              "tenantUid": "4e92dc9e-b0ef-4a83-97b6-d0de54b30115",
-              "ticket": {
-                "answered": false,
-                "apiConfig": {
-                  "authToken": null,
-                  "createdAt": "2026-03-13T21:40:32.304Z",
-                  "id": "7ed1b984-b133-47fb-8c1e-fd9a9b3ea9d0",
-                  "isAckMessage": false,
-                  "isActive": true,
-                  "isConnectionStatusUpdate": false,
-                  "isFinishedTicket": false,
-                  "isFinishedTicketHistoricMessages": false,
-                  "isNewContact": false,
-                  "isNewMessage": true,
-                  "isNewTicket": false,
-                  "isStartedTicket": false,
-                  "isTransferOfTicket": false,
-                  "isUpdateContact": false,
-                  "isUpdateOnTicket": false,
-                  "name": "Desafio Chatbot N8N",
-                  "queueId": null,
-                  "redirectUserId": null,
-                  "sessionId": 240,
-                  "tenantId": 105,
-                  "ticketAction": "OT",
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6MTA1LCJwcm9maWxlIjoiYWRtaW4iLCJzZXNzaW9uSWQiOjI0MCwiY2hhbm5lbFR5cGUiOiJ3aGF0c2FwcCIsImlhdCI6MTc3MzQzODAzMiwiZXhwIjoxODM2NTEwMDMyfQ.VPhs7uIgENC0dPwZW6RCLgt1mMI7cVGSFKVYS5d-EPs",
-                  "updatedAt": "2026-03-14T22:03:21.963Z",
-                  "urlMessageStatus": null,
-                  "urlServiceStatus": null,
-                  "userId": 712,
-                  "webhookUrl": "https://arthurguilherme.app.n8n.cloud/webhook/8e021f49-db2e-4c16-80b8-7a227870f776"
-                },
-                "autoReplyId": null,
-                "botRetries": 0,
-                "channel": "whatsapp",
-                "chatFlow": null,
-                "chatFlowId": null,
-                "closedAt": null,
-                "closingReasonId": null,
-                "contact": {
-                  "channel": "whatsapp",
-                  "createdAt": "2026-03-12T01:06:50.598Z",
-                  "customFields": {},
-                  "defaultDepartment": null,
-                  "deletedAt": null,
-                  "email": null,
-                  "extraInfo": [],
-                  "firstConnection": 292,
-                  "firstConnectionModel": {
-                    "UrlMessengerWebHook": "https://chatapi.jetsalesbrasil.com/fb-messenger-hooks/null",
-                    "UrlWabaWebHook": "https://chatapi.jetsalesbrasil.com/wabahooks/null/null",
-                    "archiveChat": false,
-                    "balance": null,
-                    "battery": null,
-                    "callRejectedMessage": "O número chamado não está disponível no momento",
-                    "chatFlowId": 300,
-                    "container": null,
-                    "createdAt": "2026-03-12T01:03:37.345Z",
-                    "defaultQueueId": null,
-                    "editedAt": "1773404509686",
-                    "fbObject": null,
-                    "fbPageId": null,
-                    "gupshupAppId": null,
-                    "gupshupAppToken": null,
-                    "id": 292,
-                    "inactivityClosingReasonId": null,
-                    "instagramKey": null,
-                    "instagramUser": null,
-                    "isActive": false,
-                    "isDefault": false,
-                    "isDeleted": false,
-                    "isRejectCall": false,
-                    "minutesInactivity": 0,
-                    "monitoring": true,
-                    "name": "Henrique",
-                    "number": "",
-                    "originalType": null,
-                    "phone": null,
-                    "pid": null,
-                    "plugged": null,
-                    "provider": "whatsmeow",
-                    "qrcode": "",
-                    "remoteAuth": false,
-                    "restartAt": null,
-                    "retries": 0,
-                    "session": "",
-                    "status": "DISCONNECTED",
-                    "tenantId": 105,
-                    "tokenAPI": null,
-                    "tokenHook": null,
-                    "tokenTelegram": null,
-                    "type": "whatsapp",
-                    "uid": "a48a2c21-344e-4ba9-8581-a971a88186bc",
-                    "updatedAt": "2026-03-13T12:21:49.700Z",
-                    "url": null,
-                    "wabaBSP": null
-                  },
-                  "id": 1796395,
-                  "identifierType": "jid",
-                  "isBlocked": false,
-                  "isGroup": false,
-                  "isUser": false,
-                  "isWAContact": true,
-                  "leadStatus": null,
-                  "leadStatusId": null,
-                  "name": "Arthur Guilherme",
-                  "negotiatedValue": null,
-                  "number": "557998647649",
-                  "observations": null,
-                  "observationsUpdatedAt": null,
-                  "observationsUpdatedBy": null,
-                  "observationsUpdatedByUser": null,
-                  "profilePicUrl": "https://pps.whatsapp.net/v/t61.24694-24/541524744_1272385541587450_9073554613909895993_n.jpg?ccb=11-4&oh=01_Q5Aa4AFkLCjxBASPP-jwz6SQNRARBYDjISroxc-Ze_wsgICE_w&oe=69C3C2BC&_nc_sid=5e03e0&_nc_cat=109",
-                  "pushname": "Arthur Guilherme",
-                  "senderJid": "557998647649@s.whatsapp.net",
-                  "senderLid": "85426949886083@lid",
-                  "tags": [],
-                  "tenantId": 105,
-                  "updatedAt": "2026-03-15T13:07:03.876Z",
-                  "wallets": []
-                },
-                "contactFunnelId": null,
-                "contactId": 1796395,
-                "createdAt": "2026-03-13T22:14:08.700Z",
-                "externalKey": "25f0f514-1dbe-4114-a1c8-1bafd89cacf4",
-                "firstMessage": ".",
-                "id": 3149990,
-                "isActiveDemand": false,
-                "isCreatedAPI": false,
-                "isFixed": false,
-                "isGroup": false,
-                "lastInteractionBot": null,
-                "lastMessage": "❓ Deseja continuar com a compra para separarmos o seu pedido?",
-                "lastMessageAt": "1773598571876",
-                "lastOutOfAbsenseMessage": null,
-                "lastOutOfHoursMessage": null,
-                "origem": "C",
-                "queue": null,
-                "queueId": null,
-                "saleValue": null,
-                "slaTime": null,
-                "startedAttendanceAt": null,
-                "status": "pending",
-                "stepAutoReplyId": null,
-                "stepChatFlow": null,
-                "tenantId": 105,
-                "timestamp": null,
-                "unread": false,
-                "unreadMessages": 1,
-                "updatedAt": "2026-03-15T18:16:11.886Z",
-                "user": null,
-                "userId": null,
-                "variables": {},
-                "whatsapp": {
-                  "editedAt": "1766111729164",
-                  "id": 240,
-                  "name": "Conexão para Teste",
-                  "originalType": "whatsmeow",
-                  "provider": "whatsmeow",
-                  "type": "whatsapp",
-                  "uid": "e97eaf91-4827-444a-be38-422dbebd09e7",
-                  "wabaBSP": null
-                },
-                "whatsappId": 240
-              },
-              "ticketId": 3149990,
-              "timestamp": "1773598571000",
-              "transcription": null,
-              "typeTemplate": null,
-              "updatedAt": "2026-03-15T18:16:11.899Z",
-              "userId": null,
-              "wabaMediaId": null
-            },
-            "sessionId": 240,
-            "tenantId": 105
-          },
-          "webhookUrl": "https://arthurguilherme.app.n8n.cloud/webhook/8e021f49-db2e-4c16-80b8-7a227870f776",
-          "executionMode": "production"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "connections": {
     "Simple Memory": {
       "ai_memory": [
@@ -1813,7 +1528,7 @@
         ]
       ]
     },
-    "Google Gemini Chat Model": {
+    "Groq Chat Model": {
       "ai_languageModel": [
         [
           {
@@ -1831,11 +1546,10 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "f78860f4-a952-4b22-bb19-652da35306f8",
+  "versionId": "2345b942-f05a-437a-b992-77c13f53567c",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "bff485ba515f1cc76372fa0fb4b5c5867158f7145a72c2677a570cd0c1c12176"
   },
-  "id": "04hkU3F3ImclWBHq",
+  "id": "6TCWNT7gLzsj1vmB",
   "tags": []
 }
